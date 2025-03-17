@@ -3,6 +3,10 @@ import axios from 'axios';
 import { io } from 'socket.io-client';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Register from './pages/register.jsx';
+import Login from './pages/login.jsx';
+import Collection from './pages/collection.jsx';
+import Play from './pages/play.jsx';
+import Profile from './pages/profile.jsx';
 
 
 function App() {
@@ -16,21 +20,35 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    const socket = io(import.meta.env.VITE_SOCKET_URL);
     socket.on("connect", () => setSocketStatus(`Connected (ID: ${socket.id})`));
     socket.on("disconnect", () => setSocketStatus("Disconnected"));
     return () => socket.disconnect();
   }, []);
 
-  return (
-    <Router>
+  const homeElement = (
+    <div>
       <h1>Welcome to Hearthstone!</h1>
       <p>API says: {message}</p>
       <p>Socket status: {socketStatus}</p>
+    </div>
+  );
+  
+
+  return (
+    <Router>
+      <div>
+        <Link to="/play">Play</Link>
+        <Link to="/collection">Collection</Link>
+        <Link to="/profile">Profile</Link>
+      </div>
       <Routes>
-          <Route path='/' element={<p>Hi!</p>} />
+          <Route path='/' element={homeElement} />
           <Route path='/register' element={<Register/>} />
-          {/* <Route path=''/> */}
+          <Route path='/login' element={<Login/>} />
+          <Route path='/play' element={<Play/>} />
+          <Route path='/collection' element={<Collection/>} />
+          <Route path='/profile' element={<Profile/>} />
       </Routes>
     </Router>
   );

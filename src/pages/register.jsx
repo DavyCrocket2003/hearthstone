@@ -24,9 +24,9 @@ function Register() {
         email: registrationEmail,
         password: registrationPassword
     }
-    await axios.post('/register', registerData).then((res) => {
-        if (!res.success) {
-            alert(res.message)
+    await axios.post('/api/register', registerData).then(({data}) => {
+        if (data.success) {
+            alert(data.message)
         } else {
             alert('Registration successful. You may now login to your account.')
             // Navigate to '/'
